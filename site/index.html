@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pagednaApp">
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" id="controls">
+        controls
+      </div>
+      <div class="row" id="content">
+        <div ng-view></div>
+      </div>
+      <div class="row" id="footer">
+        footer
+      </div>
+    </div>
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript" src="angular-route.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="static/js/services.js"></script>
+    <script type="text/javascript" src="static/js/controllers.js"></script>
+    <script type="text/javascript" src="static/js/index.js"></script>
+  </body>
+</html>

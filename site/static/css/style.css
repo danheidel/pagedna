@@ -1,0 +1,25 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin:0;
+  background: #aaa;
+}
+
+#controls {
+  background: #ccc;
+  margin: 0;
+  margin-top: 2rem;
+  border: 2px;
+  padding: 1rem;
+}
+
+#content {
+  background: #ccc;
+  margin: 2rem;
+}
+
+#footer {
+  background: #ccc;
+  margin: 0;
+  border: 2px;
+  padding: 1rem;
+}

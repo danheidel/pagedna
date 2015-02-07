@@ -17,7 +17,7 @@ async.series([
 ]);
 
 function loadJSON(callback){
-  fs.readFile(__dirname + '/static/resources/rows.json', function(err, data){
+  fs.readFile(__dirname + '/site/static/resources/rows.json', function(err, data){
     if(err){
       console.log('error reading JSON file');
       console.log(err);
@@ -55,7 +55,11 @@ function startServer(callback){
 }
 
 function expressSetup(callback){
-  app.use(express.static(__dirname + '/static'));
+  app.use(express.static(__dirname + '/site'));
+  app.use(express.static(__dirname + '/bower_components/angular'));
+  app.use(express.static(__dirname + '/bower_components/angular-route'));
+  app.use(express.static(__dirname + '/bower_components/bootstrap/dist'));
+  app.use(express.static(__dirname + '/bower_components/jquery/dist'));
   app.get('/api/data', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     res.send(global.rows);
