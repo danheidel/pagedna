@@ -1,7 +1,10 @@
 {
   "name": "pagedna",
+  "private": true,
   "version": "1.0.0",
   "description": "",
+  "repository": "https://github.com/danheidel/pagedna",
+  "license": "MIT",
   "main": "app.js",
   "dependencies": {
     "async": "^0.9.0",
@@ -9,11 +12,20 @@
     "lodash": "^3.1.0"
   },
   "devDependencies": {
-    "bower": "^1.3.12"
+    "bower": "^1.3.12",
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-jasmine": "^0.3.5",
+    "karma-junit-reporter": "^0.2.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "bower install",
+    "prestart": "npm install && bower install",
+    "start": "node app.js",
+    "pretest": "npm install && bower install",
+    "test": "karma start karma.conf.js --single-run"
   },
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }
