@@ -1,0 +1,7 @@
+npm-debug.log
+node_modules/
+test/acceptance/*-results.xml
+
+build/
+dist/
+bower_components/
