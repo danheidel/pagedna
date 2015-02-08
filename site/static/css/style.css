@@ -4,6 +4,14 @@ body {
   background: #aaa;
 }
 
+input.validation-color.ng-valid {
+  background-color: #78FA89;
+}
+
+input.validation-color.ng-invalid{
+  background-color: #FA787E;
+}
+
 #controls {
   background: #ccc;
   margin: 0;

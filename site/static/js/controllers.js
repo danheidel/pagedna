@@ -4,15 +4,40 @@
 angular.module('pagednaApp.controllers', ['pagednaApp.services'])
 
 .controller('mainController', function($scope, $rootScope, dataServices){
-  $scope.sourceColumns = [
+  $scope.columns = [
     {name: 'A', totalCells: 0},
     {name: 'B', totalCells: 0}
   ];
   $scope.columns = $scope.sourceColumns;
-  $scope.sourceRows = [];
   $scope.rows = [];
   $scope.displayRows = [];
   $scope.JsonError;
+  $scope.newColumn = '';
+  $scope.invalidColumnName = false;
+  $scope.duplicateColumnName = false;
+
+  $scope.initializeData = function(){
+    $scope.columns = [
+      {name: 'A', totalCells: 0},
+      {name: 'B', totalCells: 0}
+    ];
+
+    dataServices.getJsonData(function(err, data){
+      if(err){
+        console.log(err);
+        $scope.rows = [];
+        $scope.JsonError = err;
+      } else {
+        console.log('loaded JSON data');
+        $scope.rows = $scope.parseJson(data);
+        $scope.JsonError = undefined;
+        $scope.refreshData();
+      }
+    });
+
+    $scope.refreshData();
+    console.log('initialized data to defaults');
+  }
 
   $scope.refreshData = function(){
     //was having issues with $watch not firing when variables sub properties
@@ -21,22 +46,6 @@ angular.module('pagednaApp.controllers', ['pagednaApp.services'])
     $scope.columns = $scope.getCellsPerColumn($scope.columns);
     console.log('data refreshed');
   }
-
-  $scope.getJsonData = function(){
-    dataServices.getJsonData(function(err, data){
-      if(err){
-        console.log(err);
-        $scope.sourceRows = [];
-        $scope.JsonError = err;
-      } else {
-        console.log('loaded JSON data');
-        $scope.sourceRows = $scope.parseJson(data);
-        $scope.rows = $scope.sourceRows;
-        $scope.JsonError = undefined;
-        $scope.refreshData();
-      }
-    });
-  };
 
   $scope.parseJson = function(rawJSON){
     var rows = [];
@@ -115,18 +124,16 @@ angular.module('pagednaApp.controllers', ['pagednaApp.services'])
     return columns;
   };
 
-  $scope.resetAll = function(){
-    $scope.columns = $scope.sourceColumns;
-    $scope.rows = $scope.sourceRows;
-    console.log('reset everything to defaults');
+  $scope.addNewColumn = function(form){
+    if(!form.$valid) return;
+
+    $scope.columns.push({
+      name: $scope.newColumn,
+      totalCells: 0
+    });
+
+    $scope.refreshData();
   }
 
-  $scope.checkColumnName = function(name){
-    var regex = /^(([A-FN-Z])(([-])((\d){1,4}))?)$/;
-    var check = regex.test(name);
-    //console.log('\'' + name + '\'', check);
-    return check;
-  };
-
-  $scope.getJsonData();
+  $scope.initializeData();
 });

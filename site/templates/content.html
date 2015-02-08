@@ -1,33 +1,60 @@
-<div ng-if="!JsonError">
-  <div class="row table-row">
-    <div class="table-column"
-      ng-repeat="column in columns"
-      ng-style="{ width: 100 / columns.length + '%' }"
-      style="margin-bottom: 0.7rem;">
-      <div class="table-column-header">
-        {{column.name}} ({{column.totalCells}})
-      </div>
-    </div>
-  </div>
-  <div class="row table-row"
-    ng-repeat="row in displayRows"
-    ng-class="{'even-row' : $even, 'odd-row' : $odd}">
-    <div class="table-column"
-    ng-class="{'even-column' : $even, 'odd-column': $odd}"
-    ng-style="{ width: 100 / row.columns.length + '%' }"
-    ng-repeat="column in row.columns">
-    <div class="color-cell"
-      ng-style="{width: 100 / row.totalCells + '%'}"
-      ng-repeat="cell in column.cells">
-      <div ng-style="{background: cell.color}"
-        style="height:100%"
-        ng-click="cellClicked(cell)">
-
-      </div>
-    </div>
-    </div>
-  </div>
+<div class="row" id="controls">
+  <form name="columnAddForm" class="css-form">
+    <input type="button"
+      value="Reset to defaults"
+      ng-click="initializeData()"
+      style="display:inline-block"/>
+    <input type="text"
+      class="input-required validation-color"
+      ng-model="newColumn"
+      name="nameInput"
+      columns="columns"
+      valid-column required/>
+    <input type="button" value="add a new column" ng-click="addNewColumn(columnAddForm)"/>
+    <span ng-if="invalidColumnName">
+      This column name is not valid
+    </span>
+    <span ng-if="duplicateColumnName">
+      This column name already exists
+    </span>
+  </form>
 </div>
+<div class="row" id="content">
+  <div ng-if="!JsonError">
+    <div class="row table-row">
+      <div class="table-column"
+        ng-repeat="column in columns"
+        ng-style="{ width: 100 / columns.length + '%' }"
+        style="margin-bottom: 0.7rem;">
+        <div class="table-column-header">
+          {{column.name}} ({{column.totalCells}})
+        </div>
+      </div>
+    </div>
+    <div class="row table-row"
+      ng-repeat="row in displayRows"
+      ng-class="{'even-row' : $even, 'odd-row' : $odd}">
+      <div class="table-column"
+      ng-class="{'even-column' : $even, 'odd-column': $odd}"
+      ng-style="{ width: 100 / row.columns.length + '%' }"
+      ng-repeat="column in row.columns">
+      <div class="color-cell"
+        ng-style="{width: 100 / row.totalCells + '%'}"
+        ng-repeat="cell in column.cells">
+        <div ng-style="{background: cell.color}"
+          style="height:100%"
+          ng-click="cellClicked(cell)">
+
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
 <div ng-if="JsonError">
   {{JsonError}}
+</div>
+
+</div>
+<div class="row" id="footer">
+  footer
 </div>
