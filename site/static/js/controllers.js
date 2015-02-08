@@ -4,8 +4,129 @@
 angular.module('pagednaApp.controllers', ['pagednaApp.services'])
 
 .controller('mainController', function($scope, $rootScope, dataServices){
-  dataServices.getJSONdata(function(err, data){
-    console.log(err);
-    console.log(data);
-  });
+  $scope.sourceColumns = [
+    {name: 'A', totalCells: 0},
+    {name: 'B', totalCells: 0}
+  ];
+  $scope.columns = $scope.sourceColumns;
+  $scope.sourceRows = [];
+  $scope.rows = [];
+  $scope.displayRows = [];
+  $scope.JsonError;
+
+  $scope.refreshData = function(){
+    //was having issues with $watch not firing when variables sub properties
+      //are update via reference, just do it manually
+    $scope.displayRows = $scope.displayFormat($scope.rows);
+    $scope.columns = $scope.getCellsPerColumn($scope.columns);
+    console.log('data refreshed');
+  }
+
+  $scope.getJsonData = function(){
+    dataServices.getJsonData(function(err, data){
+      if(err){
+        console.log(err);
+        $scope.sourceRows = [];
+        $scope.JsonError = err;
+      } else {
+        console.log('loaded JSON data');
+        $scope.sourceRows = $scope.parseJson(data);
+        $scope.rows = $scope.sourceRows;
+        $scope.JsonError = undefined;
+        $scope.refreshData();
+      }
+    });
+  };
+
+  $scope.parseJson = function(rawJSON){
+    var rows = [];
+    _.each(rawJSON, function(JsonRow){
+      var tempSourceRow = [];
+      _.each(JsonRow.sequence, function(item, index){
+        tempSourceRow.push({
+          color: item,
+          order: index,
+          column: JsonRow.states[item]
+        });
+      });
+      rows.push(tempSourceRow);
+    });
+    return rows;
+  };
+
+  $scope.displayFormat = function(rows){
+    var newRows = [];
+    _.each(rows, function(row){
+      var displayRow = {
+        totalCells: row.length,
+        columns: []
+      };
+      _.each($scope.columns, function(column, index){
+        var tempColumn = {
+          name: column.name,
+          cells: []
+        };
+        _.each(row, function(cell){
+          if(cell.column === tempColumn.name){
+            tempColumn.cells.push(cell);
+          }
+        });
+        //cells should stay in order but for paranoia sake...
+        tempColumn.cells = _.sortBy(tempColumn.cells, function(cell){
+          return cell.order;
+        });
+        displayRow.columns.push(tempColumn);
+      });
+      newRows.push(displayRow);
+    });
+    return newRows;
+  };
+
+  $scope.cellClicked = function(cell){
+    var currentColumn = -1;
+    _.each($scope.columns, function(column, index){
+      if(cell.column === column.name){
+        currentColumn = index;
+      }
+    });
+    if(currentColumn === -1){
+      //cell column was not matched with a column for some reason
+      console.error('column mismatch error');
+      cell.column = $scope.columns[0].name;
+    }
+    currentColumn++;
+    cell.column = $scope.columns[currentColumn % $scope.columns.length].name;
+    $scope.refreshData();
+  }
+
+  $scope.getCellsPerColumn = function(columns){
+    _.each(columns, function(column){
+      column.totalCells = 0;
+    });
+    _.each($scope.rows, function(row){
+      _.each(row, function(cell){
+        _.each(columns, function(column){
+          if(column.name === cell.column){
+            column.totalCells ++;
+          }
+        });
+      });
+    });
+    return columns;
+  };
+
+  $scope.resetAll = function(){
+    $scope.columns = $scope.sourceColumns;
+    $scope.rows = $scope.sourceRows;
+    console.log('reset everything to defaults');
+  }
+
+  $scope.checkColumnName = function(name){
+    var regex = /^(([A-FN-Z])(([-])((\d){1,4}))?)$/;
+    var check = regex.test(name);
+    //console.log('\'' + name + '\'', check);
+    return check;
+  };
+
+  $scope.getJsonData();
 });

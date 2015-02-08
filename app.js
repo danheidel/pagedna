@@ -60,6 +60,7 @@ function expressSetup(callback){
   app.use(express.static(__dirname + '/bower_components/angular-route'));
   app.use(express.static(__dirname + '/bower_components/bootstrap/dist'));
   app.use(express.static(__dirname + '/bower_components/jquery/dist'));
+  app.use(express.static(__dirname + '/bower_components/lodash'));
   app.get('/api/data', function(req, res){
     res.setHeader('Content-Type', 'application/json');
     res.send(global.rows);

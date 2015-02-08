@@ -8,7 +8,9 @@ body {
   background: #ccc;
   margin: 0;
   margin-top: 2rem;
-  border: 2px;
+  border-color: #111;
+  border-width: 2px;
+  border-style: solid;
   padding: 1rem;
 }
 
@@ -20,6 +22,67 @@ body {
 #footer {
   background: #ccc;
   margin: 0;
-  border: 2px;
+  border-color: #111;
+  border-width: 2px;
+  border-style: solid;
   padding: 1rem;
+}
+
+.table-row {
+  margin: 0.2rem;
+}
+
+.table-column-header {
+  text-align: center;
+  font: 22px "Lucida Grande", Helvetica, Arial, sans-serif;
+  border-bottom: 3px;
+  border-top: 0;
+  border-left: 1px;
+  border-right: 1px;
+  border-color: #111;
+  border-style: solid;
+}
+
+.table-column {
+  display: inline-block;
+  height: 4rem;
+}
+
+.even-row > .even-column {
+  background: #aaa;
+}
+
+.even-row > .odd-column {
+  background: #555;
+}
+
+.odd-row > .even-column {
+  background: #555;
+}
+
+.odd-row > .odd-column {
+  background: #aaa;
+}
+
+.color-cell {
+  display: inline-block;
+  padding: 0.4rem;
+  height: inherit;
+  cursor: pointer;
+}
+
+.color-red {
+  background: red;
+}
+
+.color-yellow {
+  background: yellow;
+}
+
+.color-green {
+  background: green;
+}
+
+.color-blue {
+  background: blue;
 }
