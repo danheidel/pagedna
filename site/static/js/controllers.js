@@ -127,16 +127,12 @@ angular.module('pagednaApp.controllers', ['pagednaApp.services'])
   $scope.addNewColumn = function(form){
     if(!form.$valid) return;
 
-    for(var rep=0;rep<$scope.columns.length;rep++){
-      if($scope.newColumn === $scope.columns[rep].name){
-        return;
-      }
-    }
-
     $scope.columns.push({
       name: $scope.newColumn,
       totalCells: 0
     });
+
+    $scope.newColumn = '';
 
     $scope.refreshData();
   }
