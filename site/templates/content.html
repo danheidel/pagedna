@@ -10,11 +10,13 @@
       name="nameInput"
       columns="columns"
       valid-column required/>
-    <input type="button" value="add a new column" ng-click="addNewColumn(columnAddForm)"/>
-    <span ng-if="invalidColumnName">
+    <input type="button"
+      value="add a new column"
+      ng-click="addNewColumn(columnAddForm)"/>
+    <span ng-if="columnAddForm.nameInput.$error.validName && !columnAddForm.nameInput.$error.required">
       This column name is not valid
     </span>
-    <span ng-if="duplicateColumnName">
+    <span ng-if="columnAddForm.nameInput.$error.noDuplicates">
       This column name already exists
     </span>
   </form>
